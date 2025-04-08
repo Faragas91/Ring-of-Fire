@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-player',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class PlayerComponent {
 
+  @Input() name: string = '';
 }
