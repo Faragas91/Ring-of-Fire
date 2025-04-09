@@ -18,7 +18,4 @@ export class DialogAddPlayerComponent {
     console.log('Dialog closed');
   }
 
-  addPlayer(): void {
-    console.log('Player added: ' + this.name);
-  }
 }
