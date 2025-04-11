@@ -1,0 +1,30 @@
+[debug] [2025-04-11T13:51:31.455Z] ----------------------------------------------------------------------
+[debug] [2025-04-11T13:51:31.457Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Stefan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-04-11T13:51:31.457Z] CLI Version:   13.0.1
+[debug] [2025-04-11T13:51:31.457Z] Platform:      win32
+[debug] [2025-04-11T13:51:31.457Z] Node Version:  v18.20.8
+[debug] [2025-04-11T13:51:31.458Z] Time:          Fri Apr 11 2025 15:51:31 GMT+0200 (Mitteleuropäische Sommerzeit)
+[debug] [2025-04-11T13:51:31.458Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-11T13:51:31.461Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-04-11T13:51:31.551Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"targets"}
+[debug] [2025-04-11T13:51:31.556Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-11T13:51:31.556Z] > authorizing via signed-in user (laisile2309@gmail.com)
+[debug] [2025-04-11T13:51:31.557Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"targets"}
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\Developer Akademie\Course Projects\Ring-of-Fire\ringoffire
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[debug] [2025-04-11T13:51:31.868Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-04-11T13:51:31.869Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}

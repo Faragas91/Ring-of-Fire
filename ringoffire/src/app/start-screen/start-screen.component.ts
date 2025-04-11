@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { Game } from 'src/models/game';
 
 @Component({
   selector: 'app-start-screen',
@@ -8,6 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./start-screen.component.scss']
 })
 export class StartScreenComponent implements OnInit {
+
+  private firestore: Firestore = inject(Firestore);
+
   constructor(private router: Router) {
   }
 
@@ -16,7 +20,17 @@ export class StartScreenComponent implements OnInit {
     // You can perform any necessary setup here
   }
 
-  newGame() {
-    this.router.navigateByUrl('/game');
+  newGame(id: string):void {
+    this.router.navigateByUrl(`/game/${id}`);
+  }
+
+  async addGame(): Promise<void> {
+    const newGameInstance = new Game();
+    try {
+      const docRef = await addDoc(collection(this.firestore, 'games'), newGameInstance.toJson());
+      this.newGame(docRef.id);
+    } catch (err) {
+      console.error("Fehler beim Hinzufügen des Spiels:", err);
+    }
   }
 }

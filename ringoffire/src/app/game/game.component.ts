@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Game } from './../../models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
+import { Firestore, query, orderBy, limit, collection, collectionData, doc, addDoc, updateDoc,  getDoc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -10,19 +12,48 @@ import { GameInfoComponent } from '../game-info/game-info.component';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  pickCardAnimation: boolean = false;
-  currentCard: string = '';
+  pickCardAnimation = false;
+  currentCard = '';
   game!: Game;
+  gameId: string = '';
 
-  constructor(public dialog: MatDialog) {}
+  private firestore: Firestore = inject(Firestore);
+
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    this.newGame();
+    this.route.params.subscribe((params) => {
+      this.gameId = params['id'];
+      console.log('Game ID:', this.gameId);
+      this.loadGame(this.gameId); 
+    });
+  }
+
+  loadGame(gameId: string): void {
+    const gameRef = doc(this.firestore, 'games', gameId);
+    getDoc(gameRef).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const gameData = docSnapshot.data();
+        console.log('Spiel geladen:', gameData);
+        this.game = new Game(); 
+        this.game.players = gameData['players'] || [];
+        this.game.stack = gameData['stack'] || [];
+        this.game.playedCards = gameData['playedCards'] || [];
+        this.game.currentPlayer = gameData['currentPlayer'] || 0;
+      } else {
+        console.log('Spiel existiert nicht');
+      }
+    }).catch((error) => {
+      console.log('Fehler beim Laden des Spiels:', error);
+    });
   }
 
   newGame() {
     this.game = new Game();
     console.log(this.game);
+
+    addDoc(collection(this.firestore, 'games'), this.game.toJson());
   }
 
   takeCard() {
@@ -38,17 +69,32 @@ export class GameComponent implements OnInit {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
       }, 1000);
+      this.updateGame();
     }
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddPlayerComponent, {
-    });
+    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.updateGame();
       }
     });
+  }
+
+  getGamesRef() {
+    return collection(this.firestore, 'games');
+  }
+
+  updateGame() {
+    const gameRef = doc(this.firestore, 'games', this.gameId);
+    updateDoc(gameRef, {
+      players: this.game.players, 
+      stack: this.game.stack,     
+      playedCards: this.game.playedCards, 
+      currentPlayer: this.game.currentPlayer,
+    })
   }
 }

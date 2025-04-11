@@ -1,0 +1,14 @@
+{
+    "targets": {
+      "ring-of-fire-b5a26": {
+        "hosting": {
+          "ringoffire": [
+            "ring-of-fire-b5a26"
+          ]
+        }
+      }
+    },
+    "projects": {
+      "default": "ring-of-fire-b5a26"
+    }
+  }

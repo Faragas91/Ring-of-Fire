@@ -1,30 +1,32 @@
-<app-player 
-    *ngFor="let player of game.players; let i = index;" 
-    [ngStyle]="{'top.px': 100 + (i * 90)}"
-    [name]="player"
-    [playerActive] = "i == game.currentPlayer"
-    class="player-position">
-</app-player>
+<ng-container *ngIf="game && game.players">
+    <app-player 
+        *ngFor="let player of game.players; let i = index;" 
+        [ngStyle]="{'top.px': 100 + (i * 90)}"
+        [name]="player"
+        [playerActive] = "i == game.currentPlayer"
+        class="player-position">
+    </app-player>
 
-<div class="field">
-    <div class="card-stack">
+    <div class="field">
+        <div class="card-stack">
 
-        <img *ngFor="let c of [0, 1, 2, 3]; let i = index;" [ngStyle]="{'right.px': i * 5}" 
-            src="assets/img/cards_old/card_cover.png">
+            <img *ngFor="let c of [0, 1, 2, 3]; let i = index;" [ngStyle]="{'right.px': i * 5}" 
+                src="assets/img/cards_old/card_cover.png">
 
-        <img (click)="takeCard()" class="top-card" style="right: 25px;" 
-            src="assets/img/cards_old/card_cover.png">        
+            <img (click)="takeCard()" class="top-card" style="right: 25px;" 
+                src="assets/img/cards_old/card_cover.png">        
 
-        <img *ngFor="let card of game.playedCards" class="played-card" style="right: 25px;"
-            src="assets/img/cards_old/{{ card }}.png">
-        
-        <img (click)="takeCard()" *ngIf="pickCardAnimation" class="pick-card" style="right: 25px;" 
-            src="assets/img/cards_old/{{currentCard}}.png">
-    </div>
-    <button mat-fab class="btn-add" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
-</div> 
+            <img *ngFor="let card of game.playedCards" class="played-card" style="right: 25px;"
+                src="assets/img/cards_old/{{ card }}.png">
+            
+            <img (click)="takeCard()" *ngIf="pickCardAnimation" class="pick-card" style="right: 25px;" 
+                src="assets/img/cards_old/{{currentCard}}.png">
+        </div>
+        <button mat-fab class="btn-add" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div> 
+</ng-container>
 
 <app-game-info [card]="currentCard" class="pin-bottom"></app-game-info>
 
