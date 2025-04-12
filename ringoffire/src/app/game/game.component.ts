@@ -5,6 +5,7 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { Firestore, query, orderBy, limit, collection, collectionData, doc, addDoc, updateDoc,  getDoc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 @Component({
   selector: 'app-game',
@@ -37,6 +38,7 @@ export class GameComponent implements OnInit {
         const gameData = docSnapshot.data();
         console.log('Spiel geladen:', gameData);
         this.game = new Game(); 
+        this.game.images = gameData['images'] || [];
         this.game.players = gameData['players'] || [];
         this.game.stack = gameData['stack'] || [];
         this.game.playedCards = gameData['playedCards'] || [];
@@ -79,6 +81,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.images.push('1.webp');
         this.updateGame();
       }
     });
@@ -91,10 +94,27 @@ export class GameComponent implements OnInit {
   updateGame() {
     const gameRef = doc(this.firestore, 'games', this.gameId);
     updateDoc(gameRef, {
+      images: this.game.images,
       players: this.game.players, 
       stack: this.game.stack,     
       playedCards: this.game.playedCards, 
       currentPlayer: this.game.currentPlayer,
     })
+  }
+
+  editPlayer(playerId: number) {
+    console.log('Player', playerId);
+
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+
+    dialogRef.afterClosed().subscribe(change => {
+    if (change == 'DELETE') {
+      this.game.images.splice(playerId, 1);
+      this.game.players.splice(playerId, 1);
+    } else {
+      this.game.images[playerId] = change;
+    }
+    this.updateGame();
+    });
   }
 }
