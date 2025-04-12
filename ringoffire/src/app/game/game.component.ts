@@ -17,6 +17,7 @@ export class GameComponent implements OnInit {
   currentCard = '';
   game!: Game;
   gameId: string = '';
+  gameOver: boolean = false;
 
   private firestore: Firestore = inject(Firestore);
 
@@ -59,19 +60,23 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop() || '';
-      this.pickCardAnimation = true;
-      
-      this.game.currentPlayer++;
-      if (this.game.currentPlayer >= this.game.players.length) {
-        this.game.currentPlayer = 0;
+    if (this.game.stack.length == 0) {
+      this.gameOver = true;
+    } else{
+      if (!this.pickCardAnimation) {
+        this.currentCard = this.game.stack.pop() || '';
+        this.pickCardAnimation = true;
+        
+        this.game.currentPlayer++;
+        if (this.game.currentPlayer >= this.game.players.length) {
+          this.game.currentPlayer = 0;
+        }
+        setTimeout(() => {
+          this.game.playedCards.push(this.currentCard);
+          this.pickCardAnimation = false;
+        }, 1000);
+        this.updateGame();
       }
-      setTimeout(() => {
-        this.game.playedCards.push(this.currentCard);
-        this.pickCardAnimation = false;
-      }, 1000);
-      this.updateGame();
     }
   }
 
