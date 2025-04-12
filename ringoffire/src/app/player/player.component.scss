@@ -22,3 +22,18 @@
 .player-active {
     background-color: orange;
 }
+
+@media screen and (max-width: 960px) {
+    .player {
+        width: 200px;    
+    
+        span {
+            font-size: 20px;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+}
