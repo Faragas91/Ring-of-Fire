@@ -2,8 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Game } from './../../models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { GameInfoComponent } from '../game-info/game-info.component';
-import { Firestore, query, orderBy, limit, collection, collectionData, doc, addDoc, updateDoc,  getDoc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, updateDoc,  getDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
@@ -27,7 +26,6 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.gameId = params['id'];
-      console.log('Game ID:', this.gameId);
       this.loadGame(this.gameId); 
     });
   }
@@ -37,7 +35,6 @@ export class GameComponent implements OnInit {
     getDoc(gameRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
         const gameData = docSnapshot.data();
-        console.log('Spiel geladen:', gameData);
         this.game = new Game(); 
         this.game.images = gameData['images'] || [];
         this.game.players = gameData['players'] || [];
